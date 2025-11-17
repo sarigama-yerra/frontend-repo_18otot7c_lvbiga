@@ -5,6 +5,8 @@ import Features from './components/Features';
 import BRoll from './components/BRoll';
 import CTA from './components/CTA';
 import Footer from './components/Footer';
+import AmbientFX from './components/AmbientFX';
+import Marquee from './components/Marquee';
 
 import Privacy from './pages/Privacy';
 import Terms from './pages/Terms';
@@ -18,6 +20,7 @@ function HomePage() {
   return (
     <>
       <Hero />
+      <Marquee />
       <Features />
       <BRoll />
       <CTA />
@@ -28,7 +31,8 @@ function HomePage() {
 export default function App() {
   return (
     <BrowserRouter>
-      <div className="min-h-screen bg-black font-sans">
+      <div className="min-h-screen bg-black font-sans relative">
+        <AmbientFX />
         <Navbar />
         <Routes>
           <Route path="/" element={<HomePage />} />

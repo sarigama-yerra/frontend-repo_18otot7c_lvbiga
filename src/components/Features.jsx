@@ -1,4 +1,5 @@
-import { motion } from 'framer-motion';
+import { motion, useScroll, useTransform } from 'framer-motion';
+import { useRef } from 'react';
 import { Shield, Timer, PhoneCall, CreditCard, MessageSquare, Lock } from 'lucide-react';
 
 const items = [
@@ -11,12 +12,23 @@ const items = [
 ];
 
 export default function Features() {
+  const ref = useRef(null);
+  const { scrollYProgress } = useScroll({ target: ref, offset: ['start 60%', 'end 10%'] });
+  const glow = useTransform(scrollYProgress, [0, 1], [0.1, 0.35]);
+
   return (
-    <section id="how" className="relative py-24 bg-gradient-to-b from-black to-zinc-950 text-white">
-      <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-yellow-500/10 via-transparent to-transparent" />
+    <section id="how" ref={ref} className="relative py-28 bg-gradient-to-b from-black to-zinc-950 text-white">
+      <motion.div
+        aria-hidden
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background:
+            'radial-gradient(60% 40% at 50% 0%, rgba(250,204,21,' + glow + ') 0%, rgba(0,0,0,0) 60%)',
+        }}
+      />
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="max-w-3xl">
-          <h2 className="text-3xl sm:text-4xl font-bold">Designed for vibes</h2>
+          <h2 className="text-3xl sm:text-4xl font-bold tracking-tight">Designed for vibes</h2>
           <p className="mt-4 text-white/70">Fast, secure, and a little unhinged. The perfect mix for your next roast session.</p>
         </div>
 
@@ -24,12 +36,13 @@ export default function Features() {
           {items.map((item, i) => (
             <motion.div
               key={item.title}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0, y: 28, scale: 0.98 }}
+              whileInView={{ opacity: 1, y: 0, scale: 1 }}
               viewport={{ once: true, margin: '-100px' }}
-              transition={{ delay: i * 0.05 }}
-              className="group rounded-2xl border border-white/10 bg-white/5 backdrop-blur p-6 hover:bg-white/10 transition"
+              transition={{ delay: i * 0.06, duration: 0.5 }}
+              className="group rounded-2xl border border-white/10 bg-white/5 backdrop-blur p-6 hover:bg-white/10 transition relative overflow-hidden"
             >
+              <div className="absolute -top-16 -right-16 h-40 w-40 rounded-full bg-amber-400/10 blur-3xl group-hover:bg-amber-400/20 transition" />
               <div className="h-12 w-12 rounded-lg bg-gradient-to-br from-amber-400 to-yellow-600 grid place-items-center shadow-inner">
                 <item.icon className="h-6 w-6 text-black" />
               </div>
